@@ -9,7 +9,10 @@ Installation is easy, just type:
 ```julia
 Pkg.clone("https://github.com/natj/toolbox.jl.git")
 ```
-
+and to load it put on top of your source code
+```julia
+using toolbox
+```
 
 ## Info
 ### Mathematical & numerical stuff
