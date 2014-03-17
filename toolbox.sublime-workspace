@@ -1,0 +1,341 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 247,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 101.0,
+		"selected_items":
+		[
+			[
+				"open",
+				"Sublime-IJulia: Open New IJulia Console"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Enable Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"julia",
+				"Sublime-IJulia: Open New IJulia Console"
+			],
+			[
+				"open i",
+				"Sublime-IJulia: Open New IJulia Console"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"open ",
+				"Sublime-IJulia: Open New IJulia Console"
+			],
+			[
+				"open ju",
+				"Sublime-IJulia: Open New IJulia Console"
+			],
+			[
+				"Open",
+				"Sublime-IJulia: Open New IJulia Console"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 601.0
+	},
+	"console":
+	{
+		"height": 110.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/jomo/Documents/ns_abstract2014/abstract.tex",
+		"/Users/jomo/Documents/1608/1608-52_article5/ver2_4u1608.tex",
+		"/Users/jomo/Documents/courses/ay190/hydro_basics.py",
+		"/Users/jomo/Downloads/FfeT6.5G2.43.data",
+		"/Users/jomo/Documents/ns_abstract2014/iron_atmos_abstract.txt",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/IJulia/Sublime-IJulia.sublime-settings",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/User/Sublime-IJulia.sublime-settings",
+		"/Users/jomo/Documents/atmos/init.jl",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/Alignment/Base File.sublime-settings",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/GitGutter/GitGutter.sublime-settings",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/Alignment/Default (OSX).sublime-keymap",
+		"/Users/jomo/Documents/atmos/abund.jl",
+		"/Users/jomo/Documents/atmos/aFe_xk_tj1.png",
+		"/Users/jomo/Documents/atmos/atmos.sublime-project",
+		"/Users/jomo/Documents/iron_atmos_abstract.txt",
+		"/Users/jomo/Documents/atmos_ns/ppkap4n.f",
+		"/Users/jomo/Documents/atmos/opac.jl",
+		"/Users/jomo/Documents/atmos/atmos_ns.jl",
+		"/Users/jomo/Documents/atmos_ns/popka3n.f",
+		"/Users/jomo/Documents/atmos_ns/nelec02.f",
+		"/Users/jomo/Documents/atmos/cs_kernel.jl",
+		"/Users/jomo/Documents/cronus/datamining/all_google.jl",
+		"/Users/jomo/Documents/cronus/datamining/datamining.jl",
+		"/Users/jomo/Documents/cronus/datamining/all_quandl.jl",
+		"/Users/jomo/Documents/atmos_ns/tcsun1_sl.f",
+		"/Users/jomo/Documents/CSC_school_application.txt",
+		"/Users/jomo/Documents/atmos_ns/atms_ns_l.f",
+		"/Users/jomo/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/jomo/Documents/cronus/data/NASDAQ/22-17-13-28-02-2014_AAC_BRCM.dat",
+		"/Users/jomo/Documents/cronus/data/NASDAQ_fl1.csv",
+		"/Users/jomo/Dropbox/research_plan/rplan_vaisala.tex",
+		"/Users/jomo/Documents/cronus/data/NASDAQ/22-37-55-15-02-2014_AAC_BRID.dat",
+		"/Users/jomo/Documents/cronus/data/NASDAQ.csv",
+		"/Users/jomo/Documents/cronus/data/NASDAQ/22-39-33-15-02-2014_UBSI_ZUMZ.dat",
+		"/Users/jomo/Documents/cronus/data/NASDAQ/22-17-13-28-02-2014_TWMC_ZUMZ.dat",
+		"/Users/jomo/Documents/cronus/data/NASDAQ/22-37-17-15-02-2014_AAC_CASH.dat",
+		"/Users/jomo/Documents/cronus/all_kauppalehti.jl",
+		"/Users/jomo/Documents/cronus/database/data/HEL/21-58-20-15-02-2014_A_V.dat",
+		"/Users/jomo/Documents/cronus/HEL.csv",
+		"/Users/jomo/Documents/cronus/datamining.jl",
+		"/Users/jomo/Documents/cronus/NYSE_v2.csv",
+		"/Users/jomo/Documents/cronus/README.md",
+		"/Users/jomo/Documents/bitbucket_issue_migration/migrate.py",
+		"/Users/jomo/Documents/cronus/NASDAQ_v2.csv",
+		"/Users/jomo/Documents/cronus/all_google.jl",
+		"/Users/jomo/Downloads/cronus-issues/db-1.0.json",
+		"/Users/jomo/Documents/cronus/NYSE.csv",
+		"/Users/jomo/Documents/cronus/database/data/HEL/17-51-14-15-02-2014.json",
+		"/Users/jomo/Documents/atmos_ns2/corr.jl"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 106.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"touchdown",
+			"we",
+			"the",
+			"stotal",
+			"fe",
+			"fe ",
+			"coulx",
+			"stark",
+			"cline",
+			"xnf",
+			"xxnf",
+			"freet",
+			"opclin",
+			"l_cur",
+			"he2op",
+			"xnf",
+			"fe",
+			"pops(",
+			"pops",
+			"xxc5",
+			"pops(",
+			"xnf(",
+			"xnf",
+			"ynfpmg",
+			"pops",
+			"xxnf3",
+			"pops(",
+			"he1op",
+			"heop",
+			"xlinop",
+			"pturb",
+			"trena",
+			"github",
+			"bitbucket_username",
+			" GOO",
+			"==",
+			"mlp",
+			"mpl",
+			"mlp",
+			"  ",
+			"arco",
+			"arco ",
+			"series",
+			"INF",
+			"dnow",
+			"wget",
+			"download",
+			"{"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 247,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								196,
+								196
+							]
+						],
+						"settings":
+						{
+							"spell_check": false,
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "toolbox.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 268.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
