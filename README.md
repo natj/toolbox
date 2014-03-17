@@ -1,20 +1,31 @@
-# toolbox
-
-## Small code snipptes and functions
-
-
-### info
-
-Small library of julia functions that I use regularly.
-
-#### Mathematical & Numerical stuff
-
-* integ
-* interp
-* locate
-* @where (TODO)
+# toolbox.jl
+### Small tools and snippets that I happen to use with julia
 
 
-#### IO & System
 
-* Modified read/writeddlm (TODO)
+## Installation
+
+Installation is easy, just type:
+```julia
+Pkg.clone("https://github.com/natj/toolbox.jl.git")
+```
+
+
+## Info
+### Mathematical & numerical stuff
+
+* `integ`
+* `interp`
+* `locate`
+* `deriv`
+* `smooth` and `smooth!`
+* `gauss_laguerre_nw`
+* `gauss_legendre_nw`
+* `expi`
+* `@where` (TODO)
+
+### IO & System
+
+* Modified `read/writeddlm` (TODO)
+* `catch_NaN`
+* `ReadConf`
