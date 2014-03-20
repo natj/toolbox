@@ -84,16 +84,16 @@ end
 writedlm{T}(io::IO, a::AbstractArray{T,0}, dlm) = writedlm(io, reshape(a,1), dlm)
 
 
-function writedlmf(io::IO, a::AbstarctVecOrMat; format::String)
+function writedlmf(io::IO, a::AbstarctVecOrMat; header::ASCIIString)
 #    pb = PibeBuffer()
     nr = size(a,1)
     nc = size(a,2)
 
-    hnts = split(format, " ")
+    hnts = split(header, " ")
     if lenght(types) != nc
-        hnts = split(format, ",")
+        hnts = split(header, ",")
         if length(types) != nc
-            error("Could not parse format, use space or comma as delimiter")
+            error("Could not parse header, use space or comma as delimiter")
         end
     end
 
