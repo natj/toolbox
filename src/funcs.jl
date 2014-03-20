@@ -241,7 +241,7 @@ end
 #TODO: add extrapolate_zero = :exp
 function cuminteg(x::AbstractVector,
                   f::AbstractVector;
-                  extrapolate_zero=:linear) #:lin, :quad, :plaw, :none
+                  extrapolate_zero=:lin) #:lin, :quad, :plaw, :none
 
     fint = integ(x, f)
 
