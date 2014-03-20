@@ -5,6 +5,7 @@ export locate,
        interp,
        deriv,
        integ,
+       cuminteg,
        smooth!,
        smooth,
        gauss_laguerre_nw,
@@ -16,13 +17,12 @@ export locate,
 ############################################
 # locate
 ############################################
-# Binary search for vectors. Returns matching index
-#
-# input: arr, x
-#
-# output: mid (index)
+# Binary search for vectors. Returns matching index.
+# If value is outside of the array, return -1
 ############################################
-function locate(arr, x)
+function locate(arr::AbstractVector, #input vector
+                x::Real) #input value
+
     n = length(arr)
     ascnd = (arr[n] >= arr[1])
     jl = 0
@@ -58,13 +58,12 @@ end
 # Interpolation function for tables
 #
 # Cubic interpolation & linear extrapolation (lerp)
-# Takes only one x0 grid point and returns f(x0)
-#
-# input: xold (old grid), fold (old values), xnew (new grid)
-#
-# output: fnew (new values interpolated to xnew grid)
 ############################################
-function interp(xold,fold,xnew)
+function interp(xold::AbstractVector, #grid
+                fold::AbstractVector, #values
+                xnew::Real; #new value
+                method=:cubic) #:cubic, :lin
+
     n=length(xold)
 
     #Determining if interpolation or extrapolation
@@ -74,16 +73,11 @@ function interp(xold,fold,xnew)
     #Interpolation
     if xnew >= xmin && xnew <= xmax
 
-        x1=xold[n-1]
-        x2=xold[n]
-        ind=n
+        #locate the current index
+        ind = locate(xold, xnew)
+        ind = ind < 3 ? 3 : ind+1
 
-        while !(xnew >= x1 && xnew <= x2) && ind>3
-            ind=ind-1
-            x1=xold[ind-1]
-            x2=xold[ind]
-        end
-
+        #TODO: method keyword to toggle linear interpolation
         #Linear interpolation
 #        ind=ind-1
 #        ind2=ind
@@ -103,7 +97,7 @@ function interp(xold,fold,xnew)
     elseif xnew < xmin
         x1=xold[1]
         x2=xold[2]
-        fnew = fold[1]-(fold[2]-fold[1])*(xnew-x1)/(x2-x1)
+        fnew = fold[1]+(fold[2]-fold[1])*(xnew-x1)/(x2-x1)
 
     #Extrapolation (outer)
     elseif xnew > xmax
@@ -116,6 +110,19 @@ function interp(xold,fold,xnew)
     return fnew
 end
 
+#vectorized interp
+function interp(xold::AbstractVector,
+                fold::AbstractVector,
+                xnew::AbstractVector)
+
+    N = length(xnew)
+    fnewarr = zeros(N)
+    for i = 1:N
+        fnewarr[i] = interp(xold, fold, xnew[i])
+    end
+
+    return fnewarr
+end
 
 ############################################
 # Deriv
@@ -123,18 +130,13 @@ end
 # First derivative of vector
 #
 # Uses weighted average of two parabolas to compute the derivative
-#
-# input: x,f,n
-#
-# output: fint
 ############################################
-
-function deriv(x,f)
+function deriv(x::AbstractVector, #grid
+               f::AbstractVector) #values
 
     n=length(x)
-    if(n==1)
-        error("Can not derivate a scalar")
-    end
+    @assert n > 1
+    @assert length(x) == length(f)
 
     dfdx=zeros(n)
 
@@ -164,23 +166,18 @@ function deriv(x,f)
 end
 
 ############################################
-# Integ2
+# Integ
 ############################################
-# Basic cumulative integration of arrays
-# starting from 0.0
+# Integration of arrays
 #
-# Uses Simpsons rule
-#
-# input: x,f
-#
-# output: fint
+# Uses weighted parabolas
 ############################################
-#
 
 #Weighted parabolas
-function integ(x, f)
+function integ(x::AbstractVector,
+               f::AbstractVector)
 
-    function parcoe(f,x)
+    function parcoe(f, x)
         a = similar(f)
         b = similar(f)
         c = similar(f)
@@ -216,20 +213,15 @@ function integ(x, f)
 
     n = length(x)
     a, b, c = parcoe(f, x)
-    fint = similar(f)
+    fint = zeros(n)
 
-    #extrapolate from 0 to x1
-#    fint[1] = (a[1]+(b[1]/2.0+(c[1]/3.0*x[1])*x[1])*x[1]) #quadratic
-    fint[1] = 0.5*x[1]*f[1] #linear
-
-    #i=2
+    fint[1] = 0.0
     finti = (a[1]+(b[1]/2.0+c[1]/3.0*x[2])*x[2])*x[2]
 
     #if unstable, use linear interpolation
-    if finti < 0.0
-        finti = 0.5*(x[2]-x[1])*(f[1]+f[2])
-    end
-    fint[2] = fint[1]+finti
+    #TODO: check when this is needed
+    finti = finti < 0.0 ? 0.5*(x[2]-x[1])*(f[1]+f[2]) : finti
+    fint[2] = finti
 
     if n == 2; return fint; end
 
@@ -237,16 +229,46 @@ function integ(x, f)
         finti = (a[i]+b[i]/2.0*(x[i+1]+x[i])+c[i]/3.0*((x[i+1]+x[i])*x[i+1]+x[i]*x[i]))*(x[i+1]-x[i])
 
         #if unstable, use linear interpolation
-        if finti < 0.0
-            finti = 0.5*(x[i+1]-x[i])*(f[i]+f[i+1])
-        end
+        #TODO: check when this is needed
+        finti = finti < 0.0 ? 0.5*(x[i+1]-x[i])*(f[i]+f[i+1]) : finti
 
-        fint[i+1] = fint[i] + finti
+        fint[i+1] = finti
     end
     return fint
 end
 
-#Simpsons rule
+#Cumulative integral
+#TODO: add extrapolate_zero = :exp
+function cuminteg(x::AbstractVector,
+                  f::AbstractVector;
+                  extrapolate_zero=:linear) #:lin, :quad, :plaw, :none
+
+    fint = integ(x, f)
+
+    #extrapolate from 0 to x1
+    if extrapolate_zero == :lin #linear
+        fint[1] = 0.5*x[1]*f[1]
+    elseif extrapolate_zero == :quad #quadratic
+        c = 0.0
+        b = (f[2]-f[1])/(x[2]-x[1])
+        a = f[1]-x[1]*b[1]
+        fint[1] = (a+(b/2.0+(c/3.0*x[1])*x[1])*x[1])
+    elseif extrapolate_zero == :plaw
+        a=log(f[2]/f[1])/log(x[2]/x[1])
+        c=f[1]/(x[1]^a)
+        fint[1]=c*(x[1]^(a+1))/(a+1)
+    elseif extrapolate_zero == :none #no extrapolation
+        fint[1] = 0.0
+    else
+        error("Unrecognized extrapolation method $(string(extrapolate_zero))")
+    end
+
+    cfint = cumsum(fint)
+    return cfint
+end
+
+#Simpsons rule (cumulative)
+#may or may not work
 function integ_Simpson(x,f)
 
     n = length(f)
@@ -294,16 +316,13 @@ end
 #
 # Smooth vector with Gaussian kernel
 #
-# input: arr,
-#        N
-#
-# output: arr
 ############################################
-#
-function smooth!(arr, N::Int=1)
+function smooth!(arr::AbstractVector, #input vector
+                 N::Int=1; #number of smoothings
+                 offs::Int=3) #offset of smoothing
 
     l = length(arr)
-    offs = 6
+    offs = 3
 
     #Gaussian 7x1 kernel
     #XXX: accept other kernels too
@@ -315,19 +334,21 @@ function smooth!(arr, N::Int=1)
                     0.05399100,
                     0.00443185]
 
-    arr2 = zeros(l+2offs)
-
+    #arr2 = zeros(l+2offs)
     for s = 1:N
 
         #Expand original array to avoid boundaries
         #XXX: extrapolate instead
-        arr2[1:offs] = ones(offs)*arr[1]
-        arr2[(offs+1):(end-offs)] = arr[:]
-        arr2[(end-offs+1):end] = ones(offs)*arr[l]
+        #arr2[1:offs] = ones(offs)*arr[1]
+        #arr2[(offs+1):(end-offs)] = arr[:]
+        #arr2[(end-offs+1):end] = ones(offs)*arr[l]
+        #sarr = conv(arr2, kernel)
+        #arr[:] = sarr[(1+offs+3):(end-offs-3)]
 
-        sarr = conv(arr2, kernel)
+        #smooth only middle parts
+        sarr = conv(arr, kernel)
+        arr[(offs+1):(l-offs)] = sarr[(1+offs+3):(end-offs-3)]
 
-        arr[:] = sarr[(1+offs+3):(end-offs-3)]
     end
 
     return arr
@@ -343,13 +364,10 @@ smooth(arr, N=1) = smooth!(deepcopy(arr), N)
 # Calculates weights and nodes of Gaussian quadrature
 # in interval [0,infty) with weight exp(-x)
 #
-# input: num (number of points)
-#
 # output: r (vector of nodes)
 #         w (vector of weights)
 ############################################
-#
-function gauss_laguerre_nw(num)
+function gauss_laguerre_nw(num::Real) #number of points
 
     J=diagm([1:2:(2*num-1)])+diagm([1:num-1],1)+diagm([1:num-1],-1)
     R,W=eig(J)
@@ -368,13 +386,10 @@ end
 # calculates weights and nodes of Gaussian quadrature
 # in interval [-1,1] with weight 1
 #
-# input: num (number of points)
-#
 # output: r (vector of nodes)
 #         w (vector of weights)
 ############################################
-#
-function gauss_legendre_nw(num)
+function gauss_legendre_nw(num::Real)
 
     nlist=[1:num-1]
     J=diagm(nlist./sqrt(4.*nlist.^2.0-1),1)+diagm(nlist./sqrt(4.*nlist.^2.0-1),-1)
@@ -392,16 +407,13 @@ end
 # Exponential integral for positive agruments
 # after Cody and Thacher, Math. of Comp. 22,641 (1968)
 #
-# input: n
-#
-# output: expint
 ############################################
-#
-function expi(n,x)
+function expi(n::Real,
+              x::Real)
 
     @assert x >= 0.0
 
-
+    #Table of predefined values
     const X1=-1.0e20
 
     const A0=-44178.5471728217
