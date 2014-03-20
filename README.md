@@ -17,18 +17,43 @@ using toolbox
 ## Info
 ### Mathematical & numerical stuff
 
-* `integ`
-* `interp`
-* `locate`
-* `deriv`
-* `smooth` and `smooth!`
-* `gauss_laguerre_nw`
-* `gauss_legendre_nw`
-* `expi`
-* `@where` (TODO)
+Integrate vector using weighted mean of two parabolas on each side
+* `integ(x, y)`
+
+Cumulative integral using `integ`. Also possible to start from zero using different extrapolations (default is `:lin`)
+* `cuminteg(x, y[,extrapolate_zero=:lin, :quad, :plaw, :none])`
+
+First derivative using weighted parabolas
+* `deriv(x, y)`
+
+Cubic or linear interpolation and linear extrapolation
+* `interp(x, y, val[, method=:cubic, :lin])`
+
+Binary search for arrays
+* `locate(x, val)`
+
+Smooth vector using Gaussian kernel `N` times. Also possible to define offset so that only `x[offs+1:end-offs-1]` is smoothed ensuring proper boundary conditions.
+* `smooth(x[, N=1, offs=3])` and `smooth!(x[, N=1, offs=3])`
+
+Nodes and weights for `N` point Gaussian quadrature. Returns tuple of `(nodes, weights)`
+* `gauss_laguerre_nw(N)`
+* `gauss_legendre_nw(N)`
+
+Exponential integral E_N(x) = int_1^infty e^(-x t) dt/ t^N for positive arguments
+* `expi(N, x)`
+
+Indexes of an array fulfilling given criteria `expr`
+* `@where expr` (TODO)
 
 ### IO & System
 
+Read parameters from config file. Searching for line where `param=val` and returns `val`. 
+* `ReadConf(file, params...)`
+
+Throw an error if x has `NaN`s in it.
+* `catch_NaN(x)`
+
+
 * Modified `read/writeddlm` (TODO)
-* `catch_NaN`
-* `ReadConf`
+
+
