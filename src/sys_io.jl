@@ -20,7 +20,7 @@ export ReadConf
 #list of variables to search eg. "teff"
 #output: list of values read from conf-file
 ############################################
-function ReadConf(file,vars...)
+function ReadConf(file, vars...)
     f_stream=open(file)
     conf_values=readlines(f_stream)
     close(f_stream)
@@ -84,7 +84,7 @@ end
 writedlm{T}(io::IO, a::AbstractArray{T,0}, dlm) = writedlm(io, reshape(a,1), dlm)
 
 
-function writedlmf(io::IO, a::AbstarctVecOrMat; header::ASCIIString)
+function fwritedlm(io::IO, a::AbstractVecOrMat; header::ASCIIString="")
 #    pb = PibeBuffer()
     nr = size(a,1)
     nc = size(a,2)
