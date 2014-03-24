@@ -216,7 +216,9 @@ function integ(x::AbstractVector,
     fint = zeros(n)
 
     fint[1] = 0.0
-    finti = (a[1]+(b[1]/2.0+c[1]/3.0*x[2])*x[2])*x[2]
+    #finti = (a[1]+(b[1]/2.0+c[1]/3.0*x[2])*x[2])*x[2]-x[1]
+    finti = (a[1]+b[1]/2.0*(x[2]+x[1])+c[1]/3.0*((x[2]+x[1])*x[2]+x[1]*x[1]))*(x[2]-x[1])
+
 
     #if unstable, use linear interpolation
     #TODO: check when this is needed
