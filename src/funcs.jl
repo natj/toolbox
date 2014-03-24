@@ -238,29 +238,37 @@ function integ(x::AbstractVector,
 end
 
 #Cumulative integral
-#TODO: add extrapolate_zero = :exp
 function cuminteg(x::AbstractVector,
                   f::AbstractVector;
-                  extrapolate_zero=:lin) #:lin, :quad, :plaw, :none
+                  extrapolate=:zlin) #:zlin, lin, :zplaw, :none
 
     fint = integ(x, f)
 
     #extrapolate from 0 to x1
-    if extrapolate_zero == :lin #linear
+    if extrapolate == :zlin #linear [0,x1]
         fint[1] = 0.5*x[1]*f[1]
-    elseif extrapolate_zero == :quad #quadratic
-        c = 0.0
-        b = (f[2]-f[1])/(x[2]-x[1])
-        a = f[1]-x[1]*b[1]
-        fint[1] = (a+(b/2.0+(c/3.0*x[1])*x[1])*x[1])
-    elseif extrapolate_zero == :plaw
+#    elseif extrapolate_zero == :quad #quadratic
+#        c = 0.0
+#        b = (f[2]-f[1])/(x[2]-x[1])
+#        a = f[1]-x[1]*b[1]
+#        fint[1] = (a+(b/2.0+(c/3.0*x[1])*x[1])*x[1])
+    elseif extrapolate == :lin #linear
+        k = (f[2]-f[1])/(x[2]-x[1])
+        b = f[1] - k*x[1]
+        if b >= 0.0
+            fint[1] = 0.5*k*x[1]^2+b*x[1]
+        else
+            x0 = -b/k
+            fint[1] = 0.5*k*(x[1]^2.0-x0^2.0)+b*(x[1]-x0)
+        end
+    elseif extrapolate == :zplaw #powerlaw [0,x1]
         a=log(f[2]/f[1])/log(x[2]/x[1])
         c=f[1]/(x[1]^a)
         fint[1]=c*(x[1]^(a+1))/(a+1)
-    elseif extrapolate_zero == :none #no extrapolation
+    elseif extrapolate == :none #no extrapolation
         fint[1] = 0.0
     else
-        error("Unrecognized extrapolation method $(string(extrapolate_zero))")
+        error("Unrecognized extrapolation method $(string(extrapolate))")
     end
 
     cfint = cumsum(fint)
