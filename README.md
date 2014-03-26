@@ -35,6 +35,9 @@ Binary search for arrays
 Smooth vector using Gaussian kernel `N` times. Also possible to define offset so that only `x[offs+1:end-offs-1]` is smoothed ensuring proper boundary conditions.
 * `smooth(x[, N=1, offs=3])` and `smooth!(x[, N=1, offs=3])`
 
+Smooth vector with B-splines (DeBoor's algorithm)
+* `şmooth_spline(x, [weights], smoothfactor)`
+
 Nodes and weights for `N` point Gaussian quadrature. Returns tuple of `(nodes, weights)`
 * `gauss_laguerre_nw(N)`
 * `gauss_legendre_nw(N)`
@@ -47,7 +50,7 @@ Indexes of an array fulfilling given criteria `expr`
 
 ### IO & System
 
-Read parameters from config file. Searching for line where `param=val` and returns `val`. 
+Read parameters from config file. Searching for line where `param=val` and returns `val`.
 * `ReadConf(file, params...)`
 
 Throw an error if x has `NaN`s in it.
