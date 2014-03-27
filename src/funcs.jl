@@ -9,6 +9,7 @@ export locate,
        smooth!,
        smooth,
        smooth_spline,
+       smooth_plaw,
        gauss_laguerre_nw,
        gauss_legendre_nw,
        expi
@@ -337,13 +338,25 @@ function smooth!(arr::AbstractVector, #input vector
 
     #Gaussian 7x1 kernel
     #XXX: accept other kernels too
-    const kernel = [0.00443185,
-                    0.05399100,
-                    0.24197100,
-                    0.39894200,
-                    0.24197100,
-                    0.05399100,
-                    0.00443185]
+    const kernel = Float64[0.00443185,
+                            0.05399100,
+                            0.24197100,
+                            0.39894200,
+                            0.24197100,
+                            0.05399100,
+                            0.00443185]
+
+    #XXX is this correct?
+    const logkernel = Float64[
+                            0.00443185,
+                            0.07342030,
+                            0.27844800,
+                            0.39894200,
+                            0.16782600,
+                            0.02927920,
+                            0.00443185
+                            ]
+
 
     #arr2 = zeros(l+2offs)
     for s = 1:N
@@ -364,7 +377,7 @@ function smooth!(arr::AbstractVector, #input vector
 
     return arr
 end
-smooth(arr, N=1) = smooth!(deepcopy(arr), N)
+smooth(arr, N=1; kvs...) = smooth!(deepcopy(arr), N; kvs...)
 
 ############################################
 # smooth_spline
@@ -504,7 +517,37 @@ end
 smooth_spline(y::AbstractVector, smooth_factor::Real) = smooth_spline(y, ones(length(y)), smooth_factor)
 
 
+############################################
+# smooth_plaw
+############################################
+#
+# Smooth vector that has powerlaw behaviour by
+# smoothing the ratio to some reference vector
+# with either gaussian kernel or splines.
+#
+############################################
+function smooth_plaw(x::AbstractVector,
+                     ref::AbstractVector, #reference vector
+                     N::Real=1; #number of smoothings OR smoothing factor
+                     offs::Int=3, #offset of smoothing
+                     method=:kernel) #:kernel, :spline
 
+    @assert length(x) == length(ref)
+
+    dr = x./ref
+
+    if method == :kernel
+        sdr = smooth(dr, int(N), offs=offs)
+    elseif method == :spline
+        sdr = smooth_spline(dr, N)
+    else
+        error("unrecognized method $(string(method))")
+    end
+
+    sx = ref .* sdr
+
+    return sx
+end
 ############################################
 # gauss_laquerre_nw
 ############################################
