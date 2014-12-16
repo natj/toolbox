@@ -214,6 +214,10 @@ function integ(x::AbstractVector,
     end
 
     n = length(x)
+    if n == 1
+        return x .* f
+    end
+    
     a, b, c = parcoe(f, x)
     fint = zeros(n)
 
@@ -247,7 +251,7 @@ function cuminteg(x::AbstractVector,
                   extrapolate=:zlin) #:zlin, lin, :zplaw, :none
 
     fint = integ(x, f)
-
+    
     #extrapolate from 0 to x1
     if extrapolate == :zlin #linear [0,x1]
         fint[1] = 0.5*x[1]*f[1]
