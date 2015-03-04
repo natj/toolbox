@@ -115,12 +115,13 @@ end
 #vectorized interp
 function interp(xold::AbstractVector,
                 fold::AbstractVector,
-                xnew::AbstractVector)
+                xnew::AbstractVector;
+                method=:cubic) #:cubic, :lin
 
     N = length(xnew)
     fnewarr = zeros(N)
     for i = 1:N
-        fnewarr[i] = interp(xold, fold, xnew[i])
+        fnewarr[i] = interp(xold, fold, xnew[i], method=method)
     end
 
     return fnewarr
