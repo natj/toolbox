@@ -81,20 +81,24 @@ function interp(xold::AbstractVector, #grid
 
         #TODO: method keyword to toggle linear interpolation
         #Linear interpolation
-#        ind=ind-1
-#        ind2=ind
-#        fnew=fold[ind2]+(fold[ind2]-fold[ind])*(xnew-x2)/(x2-x1)
+        if method == :lin
+            ind=ind-1
+            ind2=ind
+            fnew=fold[ind2]+(fold[ind2]-fold[ind])*(xnew-x2)/(x2-x1)
+        elseif method == :cubic
+            #Cubic interpolation
+            x1=xold[ind-2]
+            x2=xold[ind-1]
+            x3=xold[ind]
+            y1=fold[ind-2]
+            y2=fold[ind-1]
+            y3=fold[ind]
 
-        #Cubic interpolation
-        x1=xold[ind-2]
-        x2=xold[ind-1]
-        x3=xold[ind]
-        y1=fold[ind-2]
-        y2=fold[ind-1]
-        y3=fold[ind]
-
-        fnew = ((x3-xnew)*((x2-x3)*(x2-xnew)*y1+(x3-x1)*(x1-xnew)*y2)+(x1-x2)*(x1-xnew)*(x2-xnew)*y3)/((x1-x2)*(x1-x3)*(x2-x3))
-
+            fnew = ((x3-xnew)*((x2-x3)*(x2-xnew)*y1+(x3-x1)*(x1-xnew)*y2)+(x1-x2)*(x1-xnew)*(x2-xnew)*y3)/((x1-x2)*(x1-x3)*(x2-x3))
+        else
+            error("Check method")
+        end
+        
     #Extrapolation (inner)
     elseif xnew < xmin
         x1=xold[1]
@@ -115,13 +119,13 @@ end
 #vectorized interp
 function interp(xold::AbstractVector,
                 fold::AbstractVector,
-                xnew::AbstractVector;
-                method=:cubic) #:cubic, :lin
+                xnew::AbstractVector; 
+                kwargs...)
 
     N = length(xnew)
     fnewarr = zeros(N)
     for i = 1:N
-        fnewarr[i] = interp(xold, fold, xnew[i], method=method)
+        fnewarr[i] = interp(xold, fold, xnew[i], kwargs...)
     end
 
     return fnewarr
