@@ -120,12 +120,12 @@ end
 function interp(xold::AbstractVector,
                 fold::AbstractVector,
                 xnew::AbstractVector; 
-                kwargs...)
+                method=:cubic)
 
     N = length(xnew)
     fnewarr = zeros(N)
     for i = 1:N
-        fnewarr[i] = interp(xold, fold, xnew[i], kwargs...)
+        fnewarr[i] = interp(xold, fold, xnew[i], method=method)
     end
 
     return fnewarr
