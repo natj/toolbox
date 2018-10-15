@@ -33,7 +33,8 @@ function locate(arr::AbstractVector, #input vector
         if ju-jl <= 1
             break
         end
-        jm = int((ju+jl)/2)
+        #jm = int((ju+jl)/2)
+        jm = round(Int,((ju+jl)/2))
         if ascnd == (x >= arr[jm])
             jl = jm
         else
@@ -570,8 +571,9 @@ end
 #         w (vector of weights)
 ############################################
 function gauss_laguerre_nw(num::Real) #number of points
-
-    J=diagm([1:2:(2*num-1)])+diagm([1:num-1],1)+diagm([1:num-1],-1)
+    #J=diagm([1:2:(2*num-1)])+diagm([1:num-1],1)+diagm([1:num-1],-1)
+    J=diagm(0 => [1:2:(2*num-1)])+diagm(1 => [1:num-1])+diagm(-1 => [1:num-1])
+    #J=spdiagm(sparsevec)+diagm(Pair{1,[1:num-1]})+diagm(Pair{-1,[1:num-1]})
     R,W=eig(J)
     r=sort(R)
     w=(W[1,:].^2.0)

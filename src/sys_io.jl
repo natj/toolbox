@@ -54,7 +54,8 @@ function ReadConf(file, vars...)
 end
 
 
-function print_coolest(io::IO, x::FloatingPoint)
+#function print_coolest(io::IO, x::FloatingPoint)
+function print_coolest(io::IO, x::AbstractFloat)
     if isnan(x); return write(io, "NaN"); end
     if x < 0 write(io,'-') end
     if isinf(x); return write(io, "Inf"); end
