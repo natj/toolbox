@@ -85,7 +85,8 @@ end
 writedlm{T}(io::IO, a::AbstractArray{T,0}, dlm) = writedlm(io, reshape(a,1), dlm)
 
 
-function fwritedlm(io::IO, a::AbstractVecOrMat; header::ASCIIString="")
+#function fwritedlm(io::IO, a::AbstractVecOrMat; header::ASCIIString="")
+function fwritedlm(io::IO, a::AbstractVecOrMat; header::String="")
 #    pb = PibeBuffer()
     nr = size(a,1)
     nc = size(a,2)
@@ -112,5 +113,4 @@ function fwritedlm(io::IO, a::AbstractVecOrMat; header::ASCIIString="")
 #    write(io, takebuf_array(pb))
 #    nothing
 end
-
 
