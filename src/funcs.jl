@@ -348,7 +348,7 @@ function smooth!(arr::AbstractVector, #input vector
 
     #Gaussian 7x1 kernel
     #XXX: accept other kernels too
-    const kernel = Float64[0.00443185,
+    kernel = Float64[0.00443185,
                             0.05399100,
                             0.24197100,
                             0.39894200,
@@ -357,7 +357,7 @@ function smooth!(arr::AbstractVector, #input vector
                             0.00443185]
 
     #XXX is this correct?
-    const logkernel = Float64[
+    logkernel = Float64[
                             0.00443185,
                             0.07342030,
                             0.27844800,
@@ -416,7 +416,7 @@ x = linspace(0.0, (npoint-1.0)/npoint, npoint)
   for i = 2:npoint-1
     v[i,4] = x[i+1]-x[i]
     v[i,1] = dx[i-1]/v[i-1,4]
-    v[i,2] = ((-1.0.*dx[i])/v[i,4]) - (dx[i]/v[i-1,4])
+    v[i,2] = ((-1.0 .*dx[i])/v[i,4]) - (dx[i]/v[i-1,4])
     v[i,3] = dx[i+1]/v[i,4]
   end
 
@@ -453,15 +453,15 @@ x = linspace(0.0, (npoint-1.0)/npoint, npoint)
 
 #chol1d
 
-#  Construct 6*(1-p)*q-transp.*(d**2)*q + p*r
+#  Construct 6*(1-p)*q-transp .*(d**2)*q + p*r
 
-  six1mp = 6.0.*(1.0-p)
-  twop = 2.0.*p
+  six1mp = 6.0 .*(1.0-p)
+  twop = 2.0 .*p
 
   for i = 2: npoint-1
-    v[i,1] = (six1mp.*v[i,5]) + (twop.*(v[i-1,4]) + v[i,4])
-    v[i,2] = (six1mp.*v[i,6]) +( p.*v[i,4])
-    v[i,3] = six1mp.*v[i,7]
+    v[i,1] = (six1mp .*v[i,5]) + (twop .*(v[i-1,4]) + v[i,4])
+    v[i,2] = (six1mp .*v[i,6]) +( p .*v[i,4])
+    v[i,3] = six1mp .*v[i,7]
   end
 
   if  npoint < 4
@@ -474,11 +474,11 @@ x = linspace(0.0, (npoint-1.0)/npoint, npoint)
   else
     for i = 2: npoint-2
       ratio = v[i,2]/v[i,1]
-      v[i+1,1] = v[i+1,1]-(ratio.*v[i,2])
-      v[i+1,2] = v[i+1,2]-(ratio.*v[i,3])
+      v[i+1,1] = v[i+1,1]-(ratio .*v[i,2])
+      v[i+1,2] = v[i+1,2]-(ratio .*v[i,3])
       v[i,2] = ratio
       ratio = v[i,3]./v[i,1]
-      v[i+2,1] = v[i+2,1]-(ratio.*v[i,3])
+      v[i+2,1] = v[i+2,1]-(ratio .*v[i,3])
       v[i,3] = ratio
     end
 
@@ -511,13 +511,13 @@ x = linspace(0.0, (npoint-1.0)/npoint, npoint)
     prev = a[i,1]
   end
 
-  a[npoint,1] = -1.0.*a[npoint,1]
+  a[npoint,1] = -1.0 .*a[npoint,1]
 
 #end chol1d
 
   spline_sig = zeros(npoint)
   for i = 1: npoint
-    spline_sig[i] = y[i]-(6.0.*(1.0-p).*dx[i].*dx[i].*a[i,1])
+    spline_sig[i] = y[i]-(6.0 .*(1.0-p) .*dx[i] .*dx[i] .*a[i,1])
   end
 
     return spline_sig
@@ -596,7 +596,7 @@ end
 function gauss_legendre_nw(num::Real)
 
     nlist=[1:num-1]
-    J=diagm(nlist./sqrt(4.*nlist.^2.0-1),1)+diagm(nlist./sqrt(4.*nlist.^2.0-1),-1)
+    J=diagm(nlist./sqrt(4 .*nlist.^2.0-1),1)+diagm(nlist./sqrt(4 .*nlist.^2.0-1),-1)
     R,W=eig(J)
     r=sort(R)
     w=2.0*(W[1,:].^2.0)
@@ -618,47 +618,47 @@ function expi(n::Real,
     @assert x >= 0.0
 
     #Table of predefined values
-    const X1=-1.0e20
+    X1=-1.0e20
 
-    const A0=-44178.5471728217
-    const A1=57721.7247139444
-    const A2=9938.31388962037
-    const A3=1842.11088668000
-    const A4=101.093806161906
-    const A5=5.03416184097568
-    const B0=76537.3323337614
-    const B1=32597.1881290275
-    const B2=6106.10794245759
-    const B3=635.419418378382
-    const B4=37.2298352833327
+    A0=-44178.5471728217
+    A1=57721.7247139444
+    A2=9938.31388962037
+    A3=1842.11088668000
+    A4=101.093806161906
+    A5=5.03416184097568
+    B0=76537.3323337614
+    B1=32597.1881290275
+    B2=6106.10794245759
+    B3=635.419418378382
+    B4=37.2298352833327
 
-    const C0=4.65627107975096e-07
-    const C1=0.999979577051595
-    const C2=9.04161556946329
-    const C3=24.3784088791317
-    const C4=23.0192559391333
-    const C5=6.90522522784444
-    const C6=0.430967839469389
-    const D1=10.0411643829054
-    const D2=32.4264210695138
-    const D3=41.2807841891424
-    const D4=20.4494785013794
-    const D5=3.31909213593302
-    const D6=0.103400130404874
+    C0=4.65627107975096e-07
+    C1=0.999979577051595
+    C2=9.04161556946329
+    C3=24.3784088791317
+    C4=23.0192559391333
+    C5=6.90522522784444
+    C6=0.430967839469389
+    D1=10.0411643829054
+    D2=32.4264210695138
+    D3=41.2807841891424
+    D4=20.4494785013794
+    D5=3.31909213593302
+    D6=0.103400130404874
 
-    const E0=-0.999999999998447
-    const E1=-26.6271060431811
-    const E2=-241.055827097015
-    const E3=-895.927957772937
-    const E4=-1298.85688746484
-    const E5=-545.374158883133
-    const E6=-5.66575206533869
-    const F1=28.6271060422192
-    const F2=292.310039388533
-    const F3=1332.78537748257
-    const F4=2777.61949509163
-    const F5=2404.01713225909
-    const F6=631.657483280800
+    E0=-0.999999999998447
+    E1=-26.6271060431811
+    E2=-241.055827097015
+    E3=-895.927957772937
+    E4=-1298.85688746484
+    E5=-545.374158883133
+    E6=-5.66575206533869
+    F1=28.6271060422192
+    F2=292.310039388533
+    F3=1332.78537748257
+    F4=2777.61949509163
+    F5=2404.01713225909
+    F6=631.657483280800
 
     if x==X1
 #        expint=ex1
