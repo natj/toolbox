@@ -1,5 +1,5 @@
 #system & io tools
-
+using DelimitedFiles
 
 # WARNING: nothing here works yet!!
 # Everything you see is a work in progress
@@ -83,7 +83,7 @@ function swritedlm(io::IO, a::AbstractVecOrMat, dlm)
     nothing
 end
 #writedlm(io::IO, a::AbstractArray{T,0}, dlm) = writedlm(io, reshape(a,1), dlm) where T
-writedlm{T}(io::IO, a::AbstractArray{T,0}, dlm) = writedlm(io, reshape(a,1), dlm)
+##writedlm{T}(io::IO, a::AbstractArray{T,0}, dlm) = writedlm(io, reshape(a,1), dlm)
 
 
 #function fwritedlm(io::IO, a::AbstractVecOrMat; header::ASCIIString="")
