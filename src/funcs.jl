@@ -1,5 +1,6 @@
 # Mathematical & Numerical functions
 ############################################
+using DSP
 
 export locate,
        interp,
@@ -78,17 +79,21 @@ function interp(xold::AbstractVector, #grid
 
         #locate the current index
         ind = locate(xold, xnew)
-        ind = ind < 3 ? 3 : ind+1
+        #ind = ind < 3 ? 3 : ind+1
 
         #TODO: method keyword to toggle linear interpolation
         #Linear interpolation
         if method == :lin
-            ind=ind-1
+	    ind = ind < 2 ? 2 : ind+1
+            ind1=ind-1
             ind2=ind
-            fnew=fold[ind2]+(fold[ind2]-fold[ind])*(xnew-x2)/(x2-x1)
+	    x2 = xold[ind2]
+	    x1 = xold[ind1]
+            fnew=fold[ind2]+(fold[ind2]-fold[ind1])*(xnew-x2)/(x2-x1)
         elseif method == :cubic
             #Cubic interpolation
-            x1=xold[ind-2]
+            ind = ind < 3 ? 3 : ind+1
+	    x1=xold[ind-2]
             x2=xold[ind-1]
             x3=xold[ind]
             y1=fold[ind-2]
