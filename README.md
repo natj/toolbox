@@ -7,7 +7,8 @@
 
 Installation is easy, just type:
 ```julia
-Pkg.clone("https://github.com/natj/toolbox.jl.git")
+using Pkg
+Pkg.add(PackageSpec(url="https://github.com/natj/toolbox.git"))
 ```
 and to load it put on top of your source code
 ```julia
